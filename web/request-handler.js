@@ -9,30 +9,29 @@ var url = '';
 exports.handleRequest = function (req, res) {
 
 // renders website
-  helpers.serveAssets(res, './web/public/index.html');
+
 
 //takes in URL and makes it a string
-  req.on('data', function(chunk) {
-    url += chunk;
-  });
-  req.on('end', function() {
-    fs.appendFile('sites.text', url, function(error) {
-      console.log('fuck its an ', error);
+  var code = 200;
+
+  //if request method is options
+  //if request method is post
+  if (req.method === 'POST') {
+    req.on('data', function(chunk) {
+      url += chunk;
     });
-  });
+    req.on('end', function() {
+      archive.addUrlToList(url.slice(4), function(isTrue) {
+        url = '';
+        res.writeHead(302, helpers.headers);
+        res.end();
+      });    
+    });
 
+    // res.end();
+  }
+  
+  helpers.serveAssets(res, './web/public/index.html');
 
-
-
-
-//.readlistofurls
-  //.isrUlInList
-    // if true
-      //send user the data
-    // else
-      //.addUrlToList
-      //.downloadUrls
-
-
-  //res.end(archive.paths.list);
+  //res.end();
 };

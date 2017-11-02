@@ -25,7 +25,7 @@ describe('server', function() {
     });
   });
 
-  xdescribe('archived websites', function () {
+  describe('archived websites', function () {
     describe('GET', function () {
       it('should return the content of a website from the archive', function (done) {
         var fixtureName = 'www.google.com';
@@ -52,7 +52,7 @@ describe('server', function() {
       });
     });
 
-    xdescribe('POST', function () {
+    describe('POST', function () {
       it('should append submitted sites to \'sites.txt\'', function(done) {
         var url = 'www.example.com';
 
@@ -142,13 +142,14 @@ describe('archive helpers', function() {
     });
   });
 
-  describe('#downloadUrls', function () {
+  xdescribe('#downloadUrls', function () {
     it('should download all pending urls in the list', function (done) {
       var urlArray = ['www.example.com', 'www.google.com'];
       archive.downloadUrls(urlArray);
 
       // Ugly hack to wait for all downloads to finish.
       setTimeout(function () {
+        console.log(archive.paths.archivedSites);
         expect(fs.readdirSync(archive.paths.archivedSites)).to.deep.equal(urlArray);
         done();
       }, 500);

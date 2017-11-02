@@ -50,9 +50,21 @@ exports.isUrlInList = function(url, callback) {
 };
 
 exports.addUrlToList = function(url, callback) {
+  fs.appendFile(exports.paths.list, url, function(error) {
+    if (error) {
+      console.log('error');  
+    } else {
+      exports.isUrlInList(url, callback);
+      console.log('good shit');
+    }
+    
+  });
 };
 
 exports.isUrlArchived = function(url, callback) {
+  fs.readdir(exports.paths.archivedSites, function(err, files) {
+    callback(files.includes(url));
+  });
 };
 
 exports.downloadUrls = function(urls) {

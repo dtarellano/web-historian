@@ -9,15 +9,12 @@ var helpers = require('./http-helpers');
 exports.handleRequest = function (req, res) {
   
   var code = 200;
-  
+  console.log('method', req.method);
+  console.log('urls', req.url);
   if (req.method === 'GET') {
     helpers.serveAssets(res, './web/public/index.html');
   }
-  
-  
-    
 
-    
   if (req.method === 'POST') {
               
     var url = '';
@@ -27,49 +24,31 @@ exports.handleRequest = function (req, res) {
     req.on('end', function() {
       archive.isUrlInList(url, function(isInList) {
         if (isInList) {
-
           archive.isUrlArchived(url, function(hasArchived) {
             if (hasArchived) {
-              
+              console.log('should be going here', url);
               helpers.serveAssets(res, `./archives/sites/${url}`);
+              url = '';
             } else {
+              console.log('should not be going here');
               helpers.serveAssets(res, './web/public/loading.html');
               archive.readListOfUrls(function(list) {
                 archive.downloadUrls(list);
               });
+              url = '';
             } 
           });  
         } else {
           archive.addUrlToList(url, function(isTrue) {
-            console.log('time to feed');
-            url = '';
+
             res.writeHead(302, helpers.headers);
-            
             archive.readListOfUrls(function(list) {
-              console.log('list', list);
-              // archive.downloadUrls(list);
+              archive.downloadUrls(list);
             });
-            
+            url = '';
           });          
-          
         }
       });  
-    //check to see if we already have it in the list and in the archive
-      //return that file from the archive
-            //else
-              //send the loading page
-              //download the file
-        
-            //send the file to the client
-        //update our list of downloads to reflect this
-      
-      
-      
-   
     });
-
-      
-
   }
-
 };

@@ -47,7 +47,8 @@ exports.addUrlToList = function(url, callback) {
     if (error) {
       console.log('error');  
     } else {
-      exports.isUrlInList(url, callback);
+      console.log('hey');
+      //exports.isUrlInList(url, callback);
     }
   });
 };

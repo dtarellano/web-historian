@@ -11,7 +11,7 @@ exports.headers = {
 };
 
 exports.serveAssets = function(res, asset, callback) {
-  res.writeHead(302, {'Content-Type': 'text/html'});
+  res.writeHead(200, {'Content-Type': 'text/html'});
   fs.readFile(asset, function(err, data) {
     if (err) {
       console.log('error', err);
